@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoParts Pro - Автозапчасти премиум класса</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(220, 221, 222, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(206, 208, 210, 0.8); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .glow-effect {
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.8s ease-out;
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .pulse-hover:hover {
+            animation: pulse 0.3s ease-in-out;
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #e6e8ed 0%, #e9e9ef 50%, #e1e0e6 100%);
+        }
+        .card-hover{
+background: red;
+
+
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(155, 151, 151, 0.3);
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 10px rgba(223, 225, 227, 0.8);
+        }
+        
+        .dropdown-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .dropdown-menu.open {
+            max-height: 300px;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .cart-item {
+            transition: all 0.3s ease;
+        }
+        
+        .cart-item:hover {
+            background-color: rgba(242, 244, 248, 0.8);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="h-full bg-gray-900 text-white font-sans">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-black bg-opacity-90 backdrop-blur-md slide-in">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="text-2xl font-bold neon-text glow-effect">AutoParts Pro</div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <button onclick="showPage('home')" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-300 pulse-hover">Главная</button>
+                        
+                        <div class="relative group">
+                            <button onclick="toggleDropdown('catalog')" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-300 pulse-hover flex items-center">
+                                Каталог
+                                <svg class="ml-1 h-4 w-4 transform transition-transform duration-200 group-hover:rotate-180" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+                            <div id="catalog-dropdown" class="dropdown-menu absolute left-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg glow-effect">
+                                <button onclick="showPage('engines')" class="block px-4 py-2 text-sm hover:bg-blue-600 w-full text-left transition-colors duration-200">Двигатели</button>
+                                <button onclick="showPage('brakes')" class="block px-4 py-2 text-sm hover:bg-blue-600 w-full text-left transition-colors duration-200">Тормозная система</button>
+                                <button onclick="showPage('suspension')" class="block px-4 py-2 text-sm hover:bg-blue-600 w-full text-left transition-colors duration-200">Подвеска</button>
+                                <button onclick="showPage('electronics')" class="block px-4 py-2 text-sm hover:bg-blue-600 w-full text-left transition-colors duration-200">Электроника</button>
+                            </div>
+                        </div>
+                        
+                        <button onclick="showPage('services')" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-300 pulse-hover">Услуги</button>
+                        <button onclick="showPage('about')" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-300 pulse-hover">О нас</button>
+                        <button onclick="showPage('contact')" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-300 pulse-hover">Контакты</button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="showPage('cart')" class="glow-effect bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-all duration-300 pulse-hover">
+                        🛒 Корзина (<span id="cart-count">0</span>)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="gradient-bg min-h-full flex items-center justify-center pt-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-6xl font-bold mb-6 neon-text fade-in-up">
+                    Автозапчасти <span class="text-blue-400">Премиум Класса</span>
+                </h1>
+                <p class="text-xl mb-8 fade-in-up" style="animation-delay: 0.2s">
+                    Качественные запчасти для вашего автомобиля с гарантией и быстрой доставкой
+                </p>
+                <div class="space-x-4 fade-in-up" style="animation-delay: 0.4s">
+                    <button onclick="showPage('engines')" class="glow-effect bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 pulse-hover">
+                        Перейти в каталог
+                    </button>
+                    <button onclick="showPage('about')" class="border-2 border-blue-400 hover:bg-blue-400 hover:text-gray-900 px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 pulse-hover">
+                        Узнать больше
+                    </button>
+                </div>
+                
+                <!-- Floating Car Icon -->
+                <div class="mt-16 float-animation">
+                    <svg class="mx-auto h-32 w-32 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20 bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-center mb-16 neon-text">Почему выбирают нас?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card-hover bg-gray-700 p-8 rounded-lg text-center glow-effect">
+                        <div class="text-4xl mb-4">⚡</div>
+                        <h3 class="text-xl font-semibold mb-4">Быстрая доставка</h3>
+                        <p>Доставка по всей Кыргызстане 1-3 дня</p>
+                    </div>
+                    <div class="card-hover bg-gray-700 p-8 rounded-lg text-center glow-effect">
+                        <div class="text-4xl mb-4">🛡️</div>
+                        <h3 class="text-xl font-semibold mb-4">Гарантия качества</h3>
+                        <p>Официальная гарантия на все товары</p>
+                    </div>
+                    <div class="card-hover bg-gray-700 p-8 rounded-lg text-center glow-effect">
+                        <div class="text-4xl mb-4">💰</div>
+                        <h3 class="text-xl font-semibold mb-4">Лучшие цены</h3>
+                        <p>Конкурентные цены и система скидок</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Engines Page -->
+    <div id="engines" class="page pt-20">
+        <section class="py-20 bg-gray-800 min-h-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl font-bold text-center mb-16 neon-text fade-in-up">Запчасти для двигателей</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- BMW Поршни -->
+                 <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (3).WEBP" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+  <h3 class="text-lg font-semibold mb-2">Поршни BMW E46</h3>
+  <p class="text-gray-300 text-sm mb-3">Оригинальные поршни для BMW 3 серии</p>
+  <div class="text-xl font-bold text-blue-400 mb-3">12,500 сом</div>
+  <button onclick="addToCart('piston-bmw-e46', 'Поршни BMW E46', 12500)" 
+          class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">
+    В корзину
+  </button>
+</div>
+
+
+                    <!-- Mercedes Поршни -->
+                           <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (1).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Поршни Mercedes W204</h3>
+                        <p class="text-gray-300 text-sm mb-3">Поршни для Mercedes C-класс</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">15,800 сом</div>
+                        <button onclick="addToCart('piston-mercedes-w204', 'Поршни Mercedes W204', 15800)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Audi Поршни -->
+                          <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (2).WEBP" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Поршни Audi A4 B8</h3>
+                        <p class="text-gray-300 text-sm mb-3">Поршни для Audi A4 2.0 TFSI</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">13,200 сом</div>
+                        <button onclick="addToCart('piston-audi-a4', 'Поршни Audi A4 B8', 13200)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Volkswagen Поршни -->
+                            <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (4).WEBP" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Поршни VW Golf VII</h3>
+                        <p class="text-gray-300 text-sm mb-3">Поршни для Volkswagen Golf 1.4 TSI</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">9,800 сом </div>
+                        <button onclick="addToCart('piston-vw-golf', 'Поршни VW Golf VII', 9800)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Toyota Поршни -->
+                       <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (5).WEBP" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Поршни Toyota Camry</h3>
+                        <p class="text-gray-300 text-sm mb-3">Поршни для Toyota Camry 2.5</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">8,500 сом</div>
+                        <button onclick="addToCart('piston-toyota-camry', 'Поршни Toyota Camry', 8500)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Прокладки ГБЦ -->
+                         <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (8).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Прокладка ГБЦ BMW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Прокладка головки блока BMW N20</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">4,200 сом</div>
+                        <button onclick="addToCart('gasket-bmw-n20', 'Прокладка ГБЦ BMW', 4200)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Масляные насосы -->
+                      <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (9).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Масляный насос Audi</h3>
+                        <p class="text-gray-300 text-sm mb-3">Насос для Audi A6 3.0 TDI</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">16,500 сом</div>
+                        <button onclick="addToCart('oil-pump-audi-a6', 'Масляный насос Audi', 16500)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Распредвал Mercedes -->
+                             <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="(1).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Распредвал Mercedes</h3>
+                        <p class="text-gray-300 text-sm mb-3">Распредвал для Mercedes E-класс</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">22,000сом</div>
+                        <button onclick="addToCart('camshaft-mercedes-e', 'Распредвал Mercedes', 22000)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Клапаны BMW -->
+                               <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="th.webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Клапаны BMW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Впускные клапаны BMW M3</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">7,800 сом</div>
+                        <button onclick="addToCart('valves-bmw-m3', 'Клапаны BMW', 7800)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Блок цилиндров VW -->
+                            <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="(4).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Блок цилиндров VW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Блок для Volkswagen Passat</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">45,000 сом</div>
+                        <button onclick="addToCart('engine-block-vw', 'Блок цилиндров VW', 45000)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Турбина Audi -->
+                                 <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (10).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Турбина Audi</h3>
+                        <p class="text-gray-300 text-sm mb-3">Турбокомпрессор Audi Q5</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">85,000 сом</div>
+                        <button onclick="addToCart('turbo-audi-q5', 'Турбина Audi', 85000)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- ГБЦ Toyota -->
+                                        <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (6).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">ГБЦ Toyota</h3>
+                        <p class="text-gray-300 text-sm mb-3">Головка блока Toyota RAV4</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">35,000 сом</div>
+                        <button onclick="addToCart('cylinder-head-toyota', 'ГБЦ Toyota', 35000)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Коленвал BMW -->
+                                              <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (11).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Коленвал BMW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Коленчатый вал BMW X5</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">55,000 сом</div>
+                        <button onclick="addToCart('crankshaft-bmw-x5', 'Коленвал BMW', 55000)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Шатуны Mercedes -->
+                                                <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="11.webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Шатуны Mercedes</h3>
+                        <p class="text-gray-300 text-sm mb-3">Шатуны для Mercedes S-класс</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">18,500 сом</div>
+                        <button onclick="addToCart('connecting-rods-mercedes', 'Шатуны Mercedes', 18500)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Маховик Audi -->
+                                                 <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (13).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Маховик Audi</h3>
+                        <p class="text-gray-300 text-sm mb-3">Маховик для Audi A8</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">12,800 сом</div>
+                        <button onclick="addToCart('flywheel-audi-a8', 'Маховик Audi', 12800)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Впускной коллектор VW -->
+                                                <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (16).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Впускной коллектор VW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Коллектор Volkswagen Tiguan</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">8,900 сом</div>
+                        <button onclick="addToCart('intake-manifold-vw', 'Впускной коллектор VW', 8900)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Водяная помпа Toyota -->
+                                             <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP (14).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Водяная помпа Toyota</h3>
+                        <p class="text-gray-300 text-sm mb-3">Помпа для Toyota Corolla</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">5,200 сом</div>
+                        <button onclick="addToCart('water-pump-toyota', 'Водяная помпа Toyota', 5200)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Радиатор BMW -->
+                                                <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="OIP(15).webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Радиатор BMW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Радиатор охлаждения BMW 5 серии</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">14,500 сом</div>
+                        <button onclick="addToCart('radiator-bmw-5', 'Радиатор BMW', 14500)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Cart Page -->
+    <div id="cart" class="page pt-20">
+        <section class="py-20 bg-gray-800 min-h-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl font-bold text-center mb-16 neon-text fade-in-up">Корзина</h1>
+                <div id="cart-content">
+                    <div id="empty-cart" class="text-center py-20">
+                        <div class="text-6xl mb-4">🛒</div>
+                        <h2 class="text-2xl font-semibold mb-4">Корзина пуста</h2>
+                        <p class="text-gray-300 mb-8">Добавьте товары из каталога</p>
+                        <button onclick="showPage('engines')" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg transition-all duration-300 pulse-hover glow-effect">
+                            Перейти в каталог
+                        </button>
+                    </div>
+                    
+                    <div id="cart-items" class="hidden">
+                        <div class="grid grid-cols-1 gap-6 mb-8">
+                            <!-- Cart items will be inserted here -->
+                        </div>
+                        
+                        <div class="bg-gray-700 p-6 rounded-lg glow-effect">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xl font-semibold">Итого:</span>
+                                <span id="cart-total" class="text-2xl font-bold text-blue-400">0₽</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <button onclick="clearCart()" class="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg transition-all duration-300 pulse-hover">
+                                    Очистить корзину
+                                </button>
+                                <button onclick="checkout()" class="bg-green-600 hover:bg-green-700 px-8 py-3 rounded-lg transition-all duration-300 pulse-hover glow-effect flex-1">
+                                    Оформить заказ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Other pages (simplified for space) -->
+    <div id="brakes" class="page pt-20">
+        <section class="py-20 bg-gray-800 min-h-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl font-bold text-center mb-16 neon-text fade-in-up">Тормозная система</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                                                <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="9.webp" alt="Поршни BMW E46" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Тормозные диски BMW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Передние диски BMW E90</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">8,500 сом</div>
+                        <button onclick="addToCart('brake-disc-bmw-e90', 'Тормозные диски BMW', 8500)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Тормозные колодки Mercedes -->
+                                                 <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="8.webp" alt="Тормозные колодки Mercedes" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Колодки Mercedes</h3>
+                        <p class="text-gray-300 text-sm mb-3">Передние колодки W204</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">3,200 сом</div>
+                        <button onclick="addToCart('brake-pads-mercedes-w204', 'Колодки Mercedes', 3200)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Тормозные суппорты Audi -->
+                                                 <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="7.webp" alt="Тормозные суппорты Audi" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Суппорт Audi</h3>
+                        <p class="text-gray-300 text-sm mb-3">Передний суппорт A4 B8</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">12,800 сом</div>
+                        <button onclick="addToCart('brake-caliper-audi-a4', 'Суппорт Audi', 12800)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Тормозная жидкость -->
+                                                  <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="6.webp" alt="Тормозная жидкость" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Тормозная жидкость</h3>
+                        <p class="text-gray-300 text-sm mb-3">DOT 4 Premium 1л</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">850 сом</div>
+                        <button onclick="addToCart('brake-fluid-dot4', 'Тормозная жидкость', 850)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Главный тормозной цилиндр -->
+                                                       <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="5.webp" alt="Главный тормозной цилиндр" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Главный цилиндр</h3>
+                        <p class="text-gray-300 text-sm mb-3">ГТЦ Volkswagen Golf</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">6,500 сом</div>
+                        <button onclick="addToCart('master-cylinder-vw', 'Главный цилиндр', 6500)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Тормозные шланги -->
+                                                        <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="4.webp" alt="ормозные шланги" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Тормозные шланги</h3>
+                        <p class="text-gray-300 text-sm mb-3">Комплект шлангов Toyota</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">2,800 сом</div>
+                        <button onclick="addToCart('brake-hoses-toyota', 'Тормозные шланги', 2800)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="suspension" class="page pt-20">
+        <section class="py-20 bg-gray-800 min-h-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl font-bold text-center mb-16 neon-text fade-in-up">Подвеска</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Амортизаторы BMW -->
+                                                            <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="3.webp" alt=" Амортизаторы BMW" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Амортизаторы BMW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Передние стойки E46</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">15,500 сом</div>
+                        <button onclick="addToCart('shock-absorber-bmw-e46', 'Амортизаторы BMW', 15500)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Пружины Mercedes -->
+                                                           <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="2.webp" alt="Пружины Mercedes" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Пружины Mercedes</h3>
+                        <p class="text-gray-300 text-sm mb-3">Задние пружины W204</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">4,800 сом</div>
+                        <button onclick="addToCart('spring-mercedes-w204', 'Пружины Mercedes', 4800)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Стабилизатор Audi -->
+                                                          <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="22.webp" alt="Стабилизатор Audi" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Стабилизатор Audi</h3>
+                        <p class="text-gray-300 text-sm mb-3">Передний стабилизатор A4</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">6,200 сом</div>
+                        <button onclick="addToCart('stabilizer-audi-a4', 'Стабилизатор Audi', 6200)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Рычаги VW -->
+                                                         <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="33.webp" alt="Рычаги VW" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Рычаги VW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Передние рычаги Golf VII</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">8,900 сом</div>
+                        <button onclick="addToCart('control-arm-vw-golf', 'Рычаги VW', 8900)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Шаровые опоры Toyota -->
+                                                          <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="44.webp" alt="Шаровые опоры Toyota" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Шаровые опоры Toyota</h3>
+                        <p class="text-gray-300 text-sm mb-3">Шаровые Camry XV70</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">3,500 сом</div>
+                        <button onclick="addToCart('ball-joint-toyota-camry', 'Шаровые опоры Toyota', 3500)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Сайлентблоки BMW -->
+                                                         <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="55.webp" alt="Сайлентблоки BMW" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Сайлентблоки BMW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Комплект сайлентблоков X5</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">5,200 сом</div>
+                        <button onclick="addToCart('bushing-bmw-x5', 'Сайлентблоки BMW', 5200)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="electronics" class="page pt-20">
+        <section class="py-20 bg-gray-800 min-h-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl font-bold text-center mb-16 neon-text fade-in-up">Электроника</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- ЭБУ BMW -->
+                        <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="99.webp" alt="ЭБУ BMW" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">ЭБУ BMW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Блок управления двигателем E90</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">45,000 сом</div>
+                        <button onclick="addToCart('ecu-bmw-e90', 'ЭБУ BMW', 45000)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Генератор Merce -->
+                           <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="98.webp" alt=" Генератор Merce" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Генератор Mercedes</h3>
+                        <p class="text-gray-300 text-sm mb-3">Генератор W204 150A</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">18,500 сом</div>
+                        <button onclick="addToCart('generator-mercedes-w204', 'Генератор Mercedes', 18500)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Стартер Audi -->
+                       <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="97.webp" alt="тартер Audi" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Стартер Audi</h3>
+                        <p class="text-gray-300 text-sm mb-3">Стартер A4 B8 2.0 TFSI</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">12,800 сом</div>
+                        <button onclick="addToCart('starter-audi-a4', 'Стартер Audi', 12800)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Датчики VW -->
+                         <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="96.webp" alt="Датчики VW" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Датчики VW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Датчик кислорода Golf VII</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">4,200 сом</div>
+                        <button onclick="addToCart('sensor-vw-golf', 'Датчики VW', 4200)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- зажиг Свечиания Toyota -->
+                          <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="95.webp" alt="зажиг Свечиания Toyota" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Свечи Toyota</h3>
+                        <p class="text-gray-300 text-sm mb-3">Свечи зажигания Camry</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">1,800 сом</div>
+                        <button onclick="addToCart('spark-plugs-toyota', 'Свечи Toyota', 1800)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Катушки зажигания BMW -->
+                          <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="94.webp" alt="Катушки зажигания BMW" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Катушки BMW</h3>
+                        <p class="text-gray-300 text-sm mb-3">Катушки зажигания E46</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">8,500 сом</div>
+                        <button onclick="addToCart('ignition-coil-bmw', 'Катушки BMW', 8500)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Аккумулятор -->
+                          <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="93.webp" alt="Аккумулятор" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Аккумулятор</h3>
+                        <p class="text-gray-300 text-sm mb-3">Аккумулятор 12V 75Ah</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">6,800 сом</div>
+                        <button onclick="addToCart('battery-12v-75ah', 'Аккумулятор', 6800)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+
+                    <!-- Проводка Mercedes -->
+                         <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+  <img src="92.webp" alt="Проводка Mercedes" class="w-full h-48 object-cover rounded-md mb-3">
+  
+                        <h3 class="text-lg font-semibold mb-2">Проводка Mercedes</h3>
+                        <p class="text-gray-300 text-sm mb-3">Жгут проводов W204</p>
+                        <div class="text-xl font-bold text-blue-400 mb-3">15,200 сом</div>
+                        <button onclick="addToCart('wiring-mercedes-w204', 'Проводка Mercedes', 15200)" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded transition-all duration-300 pulse-hover glow-effect text-sm">В корзину</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="services" class="page pt-20">
+        <section class="py-20 bg-gray-800 min-h-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl font-bold text-center mb-16 neon-text fade-in-up">Наши услуги</h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                    <!-- Диагностика -->
+                   <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect text-center">
+
+  <img src="kompjuternaja.png" class="w-full h-48 object-cover rounded-lg mb-4">
+  <h3 class="text-xl font-semibold mb-4 text-blue-400">Компьютерная диагностика</h3>
+  <p class="text-gray-300 mb-4">Полная диагностика всех систем автомобиля на современном оборудовании</p>
+  <div class="text-2xl font-bold text-green-400 mb-4">от 1,500 сом</div>
+  <ul class="text-sm text-gray-300 text-left space-y-1">
+    <li>• Диагностика двигателя</li>
+    <li>• Проверка тормозной системы</li>
+    <li>• Анализ подвески</li>
+    <li>• Электронные системы</li>
+  </ul>
+</div>
+
+
+                    <!-- Установка -->
+                    <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect text-center">
+                       <img src="55377866_3.webp" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">Установка запчастей</h3>
+                        <p class="text-gray-300 mb-4">Профессиональная установка купленных у нас запчастей</p>
+                        <div class="text-2xl font-bold text-green-400 mb-4">от 800 сом</div>
+                        <ul class="text-sm text-gray-300 text-left space-y-1">
+                            <li>• Замена масла и фильтров</li>
+                            <li>• Установка тормозных колодок</li>
+                            <li>• Замена амортизаторов</li>
+                            <li>• Электронные компоненты</li>
+                        </ul>
+                    </div>
+
+                    <!-- Доставка -->
+                    <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect text-center">
+                         <img src="besplatnaya-kurerskaya-dostavka.jpg" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">Экспресс доставка</h3>
+                        <p class="text-gray-300 mb-4">Быстрая доставка запчастей по всей России</p>
+                        <div class="text-2xl font-bold text-green-400 mb-4">от 300 сом</div>
+                        <ul class="text-sm text-gray-300 text-left space-y-1">
+                            <li>• По МАНАС - в день заказа</li>
+                            <li>• По Кыргызстане - 1-3 дня</li>
+                            <li>• Бесплатно от 5,000 сом</li>
+                            <li>• Курьер до двери</li>
+                        </ul>
+                    </div>
+
+                    <!-- Консультации -->
+                    <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect text-center">
+                       <img src="images (2).jpeg" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">Техническая поддержка</h3>
+                        <p class="text-gray-300 mb-4">Консультации по подбору и установке запчастей</p>
+                        <div class="text-2xl font-bold text-green-400 mb-4">Бесплатно</div>
+                        <ul class="text-sm text-gray-300 text-left space-y-1">
+                            <li>• Подбор по VIN-коду</li>
+                            <li>• Консультации по телефону</li>
+                            <li>• Онлайн-чат поддержки</li>
+                            <li>• Инструкции по установке</li>
+                        </ul>
+                    </div>
+
+                    <!-- Гарантия -->
+                    <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect text-center">
+                      <img src="images (3).jpeg" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">Гарантийное обслуживание</h3>
+                        <p class="text-gray-300 mb-4">Полная гарантия на все товары и услуги</p>
+                        <div class="text-2xl font-bold text-green-400 mb-4">до 14 дней</div>
+                        <ul class="text-sm text-gray-300 text-left space-y-1">
+                            <li>• Гарантия на запчасти</li>
+                            <li>• Гарантия на работы</li>
+                            <li>• Бесплатная замена</li>
+                            <li>• Возврат денег</li>
+                        </ul>
+                    </div>
+
+                    <!-- Выездной сервис -->
+                    <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect text-center">
+                     <img src="922.jpeg" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">Выездной сервис</h3>
+                        <p class="text-gray-300 mb-4">Ремонт и диагностика у вас дома или в офисе</p>
+                        <div class="text-2xl font-bold text-green-400 mb-4">от 2,000 сом</div>
+                        <ul class="text-sm text-gray-300 text-left space-y-1">
+                            <li>• Диагностика на месте</li>
+                            <li>• Мелкий ремонт</li>
+                            <li>• Замена расходников</li>
+                            <li>• Экстренная помощь</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Преимущества -->
+                <div class="bg-gradient-to-r from-blue-900 to-purple-900 p-8 rounded-lg glow-effect">
+                             <h2 class="text-3xl font-bold text-center mb-8 neon-text">Почему выбирают наш сервис?</h2>
+           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+                        <div>
+                            <div class="text-3xl mb-2">⚡</div>
+                            <div class="text-xl font-semibold text-blue-400">Быстро</div>
+                            <p class="text-sm text-gray-300">Работаем без выходных</p>
+                        </div>
+                        <div>
+                            <div class="text-3xl mb-2">👨‍🔧</div>
+                            <div class="text-xl font-semibold text-blue-400">Профессионально</div>
+                            <p class="text-sm text-gray-300">Опытные мастера</p>
+                        </div>
+                        <div>
+                            <div class="text-3xl mb-2">💰</div>
+                            <div class="text-xl font-semibold text-blue-400">Выгодно</div>
+                            <p class="text-sm text-gray-300">Честные цены</p>
+                        </div>
+                        <div>
+                            <div class="text-3xl mb-2">📞</div>
+                            <div class="text-xl font-semibold text-blue-400">Доступно</div>
+                            <p class="text-sm text-gray-300">Круглосуточная поддержка</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="about" class="page pt-20">
+        <section class="py-20 bg-gray-800 min-h-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl font-bold text-center mb-16 neon-text fade-in-up">О компании AutoParts Pro</h1>
+                
+                <!-- История компании -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                    <div class="card-hover bg-gray-700 p-8 rounded-lg glow-effect">
+                        <h2 class="text-2xl font-bold mb-6 text-blue-400">Наша история</h2>
+                        <p class="text-gray-300 mb-4">
+                            AutoParts Pro была основана в 2015 году группой энтузиастов автомобильной индустрии. 
+                            Начав как небольшой магазин запчастей в МАНАС, мы выросли в одну из ведущих компаний 
+                            по продаже автозапчастей в Кыргызстане.
+                        </p>
+                        <p class="text-gray-300 mb-4">
+                            За 10 лет работы мы обслужили более 50,000 клиентов и установили партнерские отношения 
+                            с ведущими производителями автозапчастей по всему миру.
+                        </p>
+                        <div class="flex items-center space-x-4 mt-6">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-400">16+</div>
+                                <div class="text-sm text-gray-300">лет опыта</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-400">30K+</div>
+                                <div class="text-sm text-gray-300">клиентов</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-400">100K+</div>
+                                <div class="text-sm text-gray-300">запчастей</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-hover bg-gray-700 p-8 rounded-lg glow-effect">
+                        <h2 class="text-2xl font-bold mb-6 text-blue-400">Наша миссия</h2>
+                        <p class="text-gray-300 mb-4">
+                            Мы стремимся сделать обслуживание автомобилей доступным и удобным для каждого автовладельца. 
+                            Наша цель - предоставить качественные запчасти по справедливым ценам с отличным сервисом.
+                        </p>
+                        <h3 class="text-lg font-semibold mb-3 text-blue-400">Наши ценности:</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-center">
+                                <span class="text-green-400 mr-2">✓</span>
+                                Качество превыше всего
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-400 mr-2">✓</span>
+                                Честность в отношениях с клиентами
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-400 mr-2">✓</span>
+                                Постоянное развитие и инновации
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-400 mr-2">✓</span>
+                                Ответственность за результат
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Команда -->
+                <div class="mb-16">
+                    <h2 class="text-3xl font-bold text-center mb-12 neon-text">Наша команда</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect text-center">
+                            <div class="text-6xl mb-4">👨‍💼</div>
+                            <h3 class="text-xl font-semibold mb-2 text-blue-400">АБДУНОСИР</h3>
+                            <p class="text-gray-300 mb-2">ЖАМОЛДИН директор</p>
+                            <p class="text-sm text-gray-400 mb-4">15 лет в автомобильной индустрии</p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center justify-center">
+                                    <span class="text-blue-400 mr-2">📞</span>
+                                    <span>+996(990)79-75-74</span>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <span class="text-blue-400 mr-2">📧</span>
+                                    <span>@autoparts-pro.ru</span>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <span class="text-blue-400 mr-2">💬</span>
+                                    <span>@petrov_ceo</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect text-center">
+                            <div class="text-6xl mb-4">👩‍💻</div>
+                            <h3 class="text-xl font-semibold mb-2 text-blue-400">хилола</h3>
+                            <p class="text-gray-300 mb-2">мадина директор</p>
+                            <p class="text-sm text-gray-400 mb-4">администротор </p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center justify-center">
+                                    <span class="text-blue-400 mr-2">📞</span>
+                                    <span>+996 (990) 123-45-02</span>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <span class="text-blue-400 mr-2">📧</span>
+                                    <span>@autoparts-pro.ru</span>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <span class="text-blue-400 mr-2">💬</span>
+                                    <span>@sidorova_tech</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect text-center">
+                            <div class="text-6xl mb-4">👨‍🔧</div>
+                            <h3 class="text-xl font-semibold mb-2 text-blue-400">ахлиддин</h3>
+                            <p class="text-gray-300 mb-2">жанторо продаж</p>
+                            <p class="text-sm text-gray-400 mb-4">Специалист по подбору запчастей</p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center justify-center">
+                                    <span class="text-blue-400 mr-2">📞</span>
+                                    <span>+996(990)79-75-74</span>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <span class="text-blue-400 mr-2">📧</span>
+                                    <span>v@autoparts-pro.ru</span>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <span class="text-blue-400 mr-2">💬</span>
+                                    <span>@ivanov_sales</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Достижения -->
+                <div class="bg-gradient-to-r from-blue-900 to-purple-900 p-8 rounded-lg glow-effect mb-16">
+                    <h2 class="text-3xl font-bold text-center mb-8 neon-text">Наши достижения</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🏆</div>
+                            <div class="text-xl font-bold text-blue-400">Лучший сервис 2025</div>
+                            <p class="text-sm text-gray-300">По версии AutoExpert</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">⭐</div>
+                            <div class="text-xl font-bold text-blue-400">4.9/5 рейтинг</div>
+                            <p class="text-sm text-gray-300">Средняя оценка клиентов</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🚀</div>
+                            <div class="text-xl font-bold text-blue-400">Рост 150%</div>
+                            <p class="text-sm text-gray-300">За последние 2 года</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🌍</div>
+                            <div class="text-xl font-bold text-blue-400">20 регионов</div>
+                            <p class="text-sm text-gray-300">География доставки</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Партнеры -->
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold mb-8 neon-text">Наши партнеры</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+                        <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+                            <div class="text-2xl font-bold text-blue-400">BMW</div>
+                        </div>
+                        <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+                            <div class="text-2xl font-bold text-blue-400">Mercedes</div>
+                        </div>
+                        <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+                            <div class="text-2xl font-bold text-blue-400">Audi</div>
+                        </div>
+                        <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+                            <div class="text-2xl font-bold text-blue-400">Volkswagen</div>
+                        </div>
+                        <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect">
+                            <div class="text-2xl font-bold text-blue-400">Toyota</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="contact" class="page pt-20">
+        <section class="py-20 bg-gray-800 min-h-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl font-bold text-center mb-16 neon-text fade-in-up">Контакты</h1>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                    <!-- Контактная информация -->
+                    <div class="space-y-8">
+                        <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect">
+                            <h2 class="text-2xl font-bold mb-6 text-blue-400">Свяжитесь с нами</h2>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <div class="text-2xl mr-4">📞</div>
+                                    <div>
+                                        <div class="font-semibold text-blue-400">Телефон</div>
+                                        <div class="text-gray-300">+996(990)79-75-74</div>
+                                        <div class="text-gray-300">+996(553) 555-01-23 (бесплатно)</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="text-2xl mr-4">📧</div>
+                                    <div>
+                                        <div class="font-semibold text-blue-400">Email</div>
+                                        <div class="text-gray-300">info@autoparts-pro.ru</div>
+                                        <div class="text-gray-300">support@autoparts-pro.ru</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="text-2xl mr-4">📍</div>
+                                    <div>
+                                        <div class="font-semibold text-blue-400">Адрес</div>
+                                        <div class="text-gray-300">г. МАНАС, ул. Абдурахманова, 31/6,</div>
+                                        <div class="text-gray-300">БЦ "Автопарк", офис 301</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="text-2xl mr-4">🕒</div>
+                                    <div>
+                                        <div class="font-semibold text-blue-400">Режим работы</div>
+                                        <div class="text-gray-300">Пн-Пт: 9:00 - 20:00</div>
+                                        <div class="text-gray-300">Сб-Вс: 10:00 - 18:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Социальные сети -->
+                        <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect">
+                            <h3 class="text-xl font-bold mb-4 text-blue-400">Мы в социальных сетях</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <a href="#" class="flex items-center p-3 bg-pink-600 hover:bg-pink-700 rounded-lg transition-all duration-300 pulse-hover">
+                                    <span class="text-xl mr-2">📷</span>
+                                    <span class="sony" onclick="location.href='http://www.instagram.com/@autodoctor_kg'">Instagram</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Форма обратной связи -->
+                    <div class="card-hover bg-gray-700 p-6 rounded-lg glow-effect">
+                        <h2 class="text-2xl font-bold mb-6 text-blue-400">Напишите нам</h2>
+                        <form id="contact-form" onsubmit="sendMessage(event)">
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="contact-name" class="block text-sm font-medium mb-2">Ваше имя *</label>
+                                    <input type="text" id="contact-name" name="name" required 
+                                           class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                
+                                <div>
+                                    <label for="contact-email" class="block text-sm font-medium mb-2">Email *</label>
+                                    <input type="email" id="contact-email" name="email" required 
+                                           class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                
+                                <div>
+                                    <label for="contact-phone" class="block text-sm font-medium mb-2">Телефон</label>
+                                    <input type="tel" id="contact-phone" name="phone" placeholder="+7 (999) 123-45-67"
+                                           class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                
+                                <div>
+                                    <label for="contact-subject" class="block text-sm font-medium mb-2">Тема обращения *</label>
+                                    <select id="contact-subject" name="subject" required 
+                                            class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        <option value="">Выберите тему</option>
+                                        <option value="order">Вопрос по заказу</option>
+                                        <option value="parts">Подбор запчастей</option>
+                                        <option value="service">Вопрос по услугам</option>
+                                        <option value="complaint">Жалоба</option>
+                                        <option value="suggestion">Предложение</option>
+                                        <option value="other">Другое</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label for="contact-message" class="block text-sm font-medium mb-2">Сообщение *</label>
+                                    <textarea id="contact-message" name="message" rows="5" required 
+                                              placeholder="Опишите ваш вопрос или предложение..."
+                                              class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"></textarea>
+                                </div>
+                                
+                                <div>
+                                    <label class="flex items-start">
+                                        <input type="checkbox" id="contact-agreement" name="agreement" required 
+                                               class="mr-3 mt-1 text-blue-600 focus:ring-blue-500">
+                                        <span class="text-sm text-gray-300">Я согласен на обработку персональных данных</span>
+                                    </label>
+                                </div>
+                                
+                                <button type="submit" 
+                                        class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg transition-all duration-300 pulse-hover glow-effect font-semibold">
+                                    Отправить сообщение
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+               <!-- Карта и дополнительная информация -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <!-- Карта -->
+  <div class="lg:col-span-2 card-hover bg-gray-700 p-6 rounded-lg glow-effect">
+    <h3 class="text-xl font-bold mb-4 text-blue-400">Как нас найти</h3>
+
+    <!-- Встроенная карта Google -->
+    <div class="bg-gray-600 h-64 rounded-lg overflow-hidden">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2924.825929187381!2d74.5925043!3d42.8793821!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389ec815d9c64f63%3A0x379bd0209342df34!2z0YPQuy4g0JDQstGC0L7Qu9Cw0L3QsNGPLCAzMS82LCDQmtC40LXQsiwg0JrQvtC80LXQvdGC0LDQvQ!5e0!3m2!1sru!2skg!4v1709382500000!5m2!1sru!2skg"
+        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <!-- Текст под картой -->
+    <div class="mt-4 text-sm text-gray-300">
+      <p><strong>Адрес: МАНАС</strong> Ул Абдурахманова, 31/6, </p>
+     
+      <p>• Парковка для клиентов — бесплатно</p>
+    </div>
+  </div>
+</div>
+
+                    
+                    <!-- Быстрые контакты -->
+                    <div class="space-y-6">
+                        <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect text-center">
+                            <div class="text-3xl mb-2">🚨</div>
+                            <h4 class="font-semibold text-blue-400 mb-2">Экстренная помощь</h4>
+                            <p class="text-sm text-gray-300 mb-2">Круглосуточно</p>
+                            <p class="font-bold text-green-400">+996 (555) 911-22-33</p>
+                        </div>
+                       
+                        
+                        <div class="card-hover bg-gray-700 p-4 rounded-lg glow-effect text-center">
+                            <div class="text-3xl mb-2">📋</div>
+                            <h4 class="font-semibold text-blue-400 mb-2">Заказать звонок</h4>
+                            <p class="text-sm text-gray-300 mb-2">Перезвоним в течение часа</p>
+                            <button onclick="showCallbackForm()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition-all duration-300 pulse-hover text-sm">
+                                Заказать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Cart functionality
+        let cart = [];
+        
+        function addToCart(id, name, price) {
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+            showNotification(`${name} добавлен в корзину!`, 'success');
+        }
+        
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartDisplay();
+        }
+        
+        function updateQuantity(id, newQuantity) {
+            if (newQuantity <= 0) {
+                removeFromCart(id);
+                return;
+            }
+            
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.quantity = newQuantity;
+                updateCartDisplay();
+            }
+        }
+        
+        function updateCartDisplay() {
+            const cartCount = document.getElementById('cart-count');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            const emptyCart = document.getElementById('empty-cart');
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                emptyCart.classList.remove('hidden');
+                cartItems.classList.add('hidden');
+            } else {
+                emptyCart.classList.add('hidden');
+                cartItems.classList.remove('hidden');
+                
+                const cartItemsContainer = cartItems.querySelector('.grid');
+                cartItemsContainer.innerHTML = '';
+                
+                let total = 0;
+                
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item bg-gray-700 p-4 rounded-lg flex items-center justify-between';
+                    itemElement.innerHTML = `
+                        <div class="flex-1">
+                            <h3 class="font-semibold">${item.name}</h3>
+                            <p class="text-blue-400 font-bold">${item.price.toLocaleString()}₽</p>
+                        </div>
+                        <div class="quantity-controls">
+                            <button onclick="updateQuantity('${item.id}', ${item.quantity - 1})" 
+                                    class="quantity-btn bg-red-600 hover:bg-red-700 text-white">-</button>
+                            <span class="px-3 py-1 bg-gray-600 rounded">${item.quantity}</span>
+                            <button onclick="updateQuantity('${item.id}', ${item.quantity + 1})" 
+                                    class="quantity-btn bg-green-600 hover:bg-green-700 text-white">+</button>
+                        </div>
+                        <div class="ml-4">
+                            <button onclick="removeFromCart('${item.id}')" 
+                                    class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">Удалить</button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(itemElement);
+                });
+                
+                cartTotal.textContent = total.toLocaleString() + '₽';
+            }
+        }
+        
+        function clearCart() {
+            cart = [];
+            updateCartDisplay();
+            showNotification('Корзина очищена', 'info');
+        }
+        
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification('Корзина пуста!', 'error');
+                return;
+            }
+            
+            showCheckoutForm();
+        }
+        
+        function showCheckoutForm() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            const modal = document.createElement('div');
+            modal.id = 'checkout-modal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-gray-800 rounded-lg p-6 max-w-2xl w-full max-h-full overflow-y-auto glow-effect">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold neon-text">Оформление заказа</h2>
+                        <button onclick="closeCheckoutForm()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+                    </div>
+                    
+                    <form id="checkout-form" onsubmit="processOrder(event)">
+                        <!-- Контактная информация -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-4 text-blue-400">Контактная информация</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="firstName" class="block text-sm font-medium mb-2">Имя *</label>
+                                    <input type="text" id="firstName" name="firstName" required 
+                                           class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="lastName" class="block text-sm font-medium mb-2">Фамилия *</label>
+                                    <input type="text" id="lastName" name="lastName" required 
+                                           class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium mb-2">Email *</label>
+                                    <input type="email" id="email" name="email" required 
+                                           class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="phone" class="block text-sm font-medium mb-2">Телефон *</label>
+                                    <input type="tel" id="phone" name="phone" required placeholder="+7 (999) 123-45-67"
+                                           class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Адрес доставки -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-4 text-blue-400">Адрес доставки</h3>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label for="address" class="block text-sm font-medium mb-2">Адрес *</label>
+                                    <input type="text" id="address" name="address" required placeholder="Улица, дом, квартира"
+                                           class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="city" class="block text-sm font-medium mb-2">Город *</label>
+                                        <input type="text" id="city" name="city" required 
+                                               class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label for="region" class="block text-sm font-medium mb-2">Регион *</label>
+                                        <input type="text" id="region" name="region" required 
+                                               class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label for="postalCode" class="block text-sm font-medium mb-2">Индекс *</label>
+                                        <input type="text" id="postalCode" name="postalCode" required pattern="[0-9]{6}" placeholder="123456"
+                                               class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Способ оплаты -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-4 text-blue-400">Способ оплаты</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center">
+                                    <input type="radio" name="paymentMethod" value="card" checked 
+                                           class="mr-3 text-blue-600 focus:ring-blue-500">
+                                    <span>💳 Банковская карта</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="paymentMethod" value="cash" 
+                                           class="mr-3 text-blue-600 focus:ring-blue-500">
+                                    <span>💵 Наличными при получении</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="paymentMethod" value="transfer" 
+                                           class="mr-3 text-blue-600 focus:ring-blue-500">
+                                    <span>🏦 Банковский перевод</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Данные карты -->
+                        <div id="card-details" class="mb-6">
+                            <h3 class="text-lg font-semibold mb-4 text-blue-400">Данные банковской карты</h3>
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                                <div class="flex items-center">
+                                    <span class="mr-2">⚠️</span>
+                                    <span class="font-semibold">ДЕМО РЕЖИМ</span>
+                                </div>
+                                <p class="text-sm mt-1">Это демонстрационная форма. Реальные платежи не обрабатываются.</p>
+                            </div>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label for="cardNumber" class="block text-sm font-medium mb-2">Номер карты *</label>
+                                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" 
+                                           maxlength="19" oninput="formatCardNumber(this)"
+                                           class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="expiryDate" class="block text-sm font-medium mb-2">Срок действия *</label>
+                                        <input type="text" id="expiryDate" name="expiryDate" placeholder="ММ/ГГ" 
+                                               maxlength="5" oninput="formatExpiryDate(this)"
+                                               class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label for="cvv" class="block text-sm font-medium mb-2">CVV *</label>
+                                        <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="3" 
+                                               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                               class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="cardHolder" class="block text-sm font-medium mb-2">Имя держателя карты *</label>
+                                    <input type="text" id="cardHolder" name="cardHolder" placeholder="IVAN PETROV" 
+                                           style="text-transform: uppercase"
+                                           class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Итого -->
+                        <div class="bg-gray-700 p-4 rounded-lg mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span>Товары (${cart.reduce((sum, item) => sum + item.quantity, 0)} шт.):</span>
+                                <span>${total.toLocaleString()}₽</span>
+                            </div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span>Доставка:</span>
+                                <span class="text-green-400">Бесплатно</span>
+                            </div>
+                            <hr class="border-gray-600 my-2">
+                            <div class="flex justify-between items-center text-xl font-bold">
+                                <span>Итого к оплате:</span>
+                                <span class="text-blue-400">${total.toLocaleString()}₽</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Согласие -->
+                        <div class="mb-6">
+                            <label class="flex items-start">
+                                <input type="checkbox" id="agreement" name="agreement" required 
+                                       class="mr-3 mt-1 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm">Я согласен с <a href="#" class="text-blue-400 hover:underline">условиями использования</a> и <a href="#" class="text-blue-400 hover:underline">политикой конфиденциальности</a></span>
+                            </label>
+                        </div>
+                        
+                        <!-- Кнопки -->
+                        <div class="flex gap-4">
+                            <button type="button" onclick="closeCheckoutForm()" 
+                                    class="flex-1 bg-gray-600 hover:bg-gray-700 py-3 rounded-lg transition-all duration-300">
+                                Отмена
+                            </button>
+                            <button type="submit" 
+                                    class="flex-1 bg-green-600 hover:bg-green-700 py-3 rounded-lg transition-all duration-300 pulse-hover glow-effect">
+                                Оформить заказ
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Обработчики для способа оплаты
+            const paymentMethods = modal.querySelectorAll('input[name="paymentMethod"]');
+            const cardDetails = modal.querySelector('#card-details');
+            
+            paymentMethods.forEach(method => {
+                method.addEventListener('change', function() {
+                    if (this.value === 'card') {
+                        cardDetails.style.display = 'block';
+                        // Делаем поля карты обязательными
+                        cardDetails.querySelectorAll('input').forEach(input => {
+                            if (input.id !== 'agreement') {
+                                input.required = true;
+                            }
+                        });
+                    } else {
+                        cardDetails.style.display = 'none';
+                        // Убираем обязательность полей карты
+                        cardDetails.querySelectorAll('input').forEach(input => {
+                            input.required = false;
+                        });
+                    }
+                });
+            });
+        }
+        
+        function closeCheckoutForm() {
+            const modal = document.getElementById('checkout-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            input.value = formattedValue;
+        }
+        
+        function formatExpiryDate(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            input.value = value;
+        }
+        
+        function processOrder(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const orderData = Object.fromEntries(formData.entries());
+            
+            // Проверяем заполненность обязательных полей
+            const requiredFields = event.target.querySelectorAll('input[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#4b5563';
+                }
+            });
+            
+            if (!isValid) {
+                showNotification('Пожалуйста, заполните все обязательные поля', 'error');
+                return;
+            }
+            
+            // Имитация обработки заказа
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Обработка...';
+            submitButton.disabled = true;
+            
+            setTimeout(() => {
+                const orderTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const orderNumber = Math.floor(Math.random() * 1000000);
+                
+                showNotification(`Заказ №${orderNumber} успешно оформлен на сумму ${orderTotal.toLocaleString()}₽! Мы отправили подтверждение на ${orderData.email}`, 'success');
+                
+                // Очищаем корзину и закрываем форму
+                cart = [];
+                updateCartDisplay();
+                closeCheckoutForm();
+                showPage('home');
+                
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }, 2000);
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-20 right-4 p-4 rounded-lg glow-effect z-50 ${
+                type === 'success' ? 'bg-green-600' : 
+                type === 'error' ? 'bg-red-600' : 'bg-blue-600'
+            } text-white`;
+            
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <span class="mr-2">${
+                        type === 'success' ? '✅' : 
+                        type === 'error' ? '❌' : 'ℹ️'
+                    }</span>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Navigation functionality
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            closeAllDropdowns();
+            window.scrollTo(0, 0);
+        }
+
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId + '-dropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('open');
+            }
+        }
+
+        function closeAllDropdowns() {
+            const dropdowns = document.querySelectorAll('.dropdown-menu');
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('open');
+            });
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.group')) {
+                closeAllDropdowns();
+            }
+        });
+
+        // Contact form functionality
+        function sendMessage(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const messageData = Object.fromEntries(formData.entries());
+            
+            // Проверяем заполненность обязательных полей
+            const requiredFields = event.target.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#6b7280';
+                }
+            });
+            
+            if (!isValid) {
+                showNotification('Пожалуйста, заполните все обязательные поля', 'error');
+                return;
+            }
+            
+            // Имитация отправки сообщения
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Отправка...';
+            submitButton.disabled = true;
+            
+            setTimeout(() => {
+                showNotification(`Спасибо, ${messageData.name}! Ваше сообщение отправлено. Мы ответим в течение 24 часов на ${messageData.email}`, 'success');
+                
+                // Очищаем форму
+                event.target.reset();
+                
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }, 2000);
+        }
+
+        // Callback form functionality
+        function showCallbackForm() {
+            const modal = document.createElement('div');
+            modal.id = 'callback-modal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-gray-800 rounded-lg p-6 max-w-md w-full glow-effect">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold neon-text">Заказать звонок</h2>
+                        <button onclick="closeCallbackForm()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+                    </div>
+                    
+                    <form id="callback-form" onsubmit="processCallback(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="callback-name" class="block text-sm font-medium mb-2">Ваше имя *</label>
+                                <input type="text" id="callback-name" name="name" required 
+                                       class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            
+                            <div>
+                                <label for="callback-phone" class="block text-sm font-medium mb-2">Телефон *</label>
+                                <input type="tel" id="callback-phone" name="phone" required placeholder="+7 (999) 123-45-67"
+                                       class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            
+                            <div>
+                                <label for="callback-time" class="block text-sm font-medium mb-2">Удобное время звонка</label>
+                                <select id="callback-time" name="time" 
+                                        class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Любое время</option>
+                                    <option value="morning">Утром (9:00-12:00)</option>
+                                    <option value="afternoon">Днем (12:00-17:00)</option>
+                                    <option value="evening">Вечером (17:00-20:00)</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="callback-comment" class="block text-sm font-medium mb-2">Комментарий</label>
+                                <textarea id="callback-comment" name="comment" rows="3" 
+                                          placeholder="О чем хотели бы поговорить?"
+                                          class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="flex items-start">
+                                    <input type="checkbox" id="callback-agreement" name="agreement" required 
+                                           class="mr-3 mt-1 text-blue-600 focus:ring-blue-500">
+                                    <span class="text-sm text-gray-300">Я согласен на обработку персональных данных</span>
+                                </label>
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <button type="button" onclick="closeCallbackForm()" 
+                                        class="flex-1 bg-gray-600 hover:bg-gray-700 py-2 rounded-lg transition-all duration-300">
+                                    Отмена
+                                </button>
+                                <button type="submit" 
+                                        class="flex-1 bg-blue-600 hover:bg-blue-700 py-2 rounded-lg transition-all duration-300 pulse-hover glow-effect">
+                                    Заказать звонок
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function closeCallbackForm() {
+            const modal = document.getElementById('callback-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function processCallback(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const callbackData = Object.fromEntries(formData.entries());
+            
+            // Проверяем заполненность обязательных полей
+            const requiredFields = event.target.querySelectorAll('input[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#4b5563';
+                }
+            });
+            
+            if (!isValid) {
+                showNotification('Пожалуйста, заполните все обязательные поля', 'error');
+                return;
+            }
+            
+            // Имитация обработки заявки
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Обработка...';
+            submitButton.disabled = true;
+            
+            setTimeout(() => {
+                const callbackNumber = Math.floor(Math.random() * 10000);
+                showNotification(`Заявка №${callbackNumber} принята! Мы перезвоним вам по номеру ${callbackData.phone} в течение часа`, 'success');
+                
+                closeCallbackForm();
+                
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }, 2000);
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'992e3340d2d4b1ac',t:'MTc2MTE5MDY5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
